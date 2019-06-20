@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Abolfazl Ejlali</Authors>
+    <Company></Company>
+    <Product>Serilog Discord Sink</Product>
+    <NeutralLanguage>aa</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Discord.Net.Webhook" Version="2.0.1" />
+    <PackageReference Include="serilog" Version="2.8.0" />
+  </ItemGroup>
+
+</Project>
+
