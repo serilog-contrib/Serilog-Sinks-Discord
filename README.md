@@ -6,17 +6,19 @@ A sink for serilog that let you write your logs to discord.
 
 ### How to use it ? 🤔
 
-To use discord sink you need **WebhookId** and **WebhookToken**
+First install package from
+https://www.nuget.org/packages/Serilog.Sinks.Discord/
 
-to get them, follow this steps :
+then you need **WebhookId** and **WebhookToken**
 
-0. Login to discord
-1. Create discord Server
-2. Create text chanel for logs
-3. In chanel setting section, Create webhook
+to get them, follow these steps :
 
+0. login to discord
+1. create a discord Server
+2. create a text chanel for logs
+3. in chanel setting section, Create webhook
 
-After createing webhook, you get a webhook url that contains **WebhookId** and **WebhookToken**.
+ffter createing webhook, you get a webhook url which contains **WebhookId** and **WebhookToken**.
 `https://discordapp.com/api/webhooks/[WebhookId]/[WebhookToken]`
 
 now every thing is ready.                                                                            
