@@ -1,10 +1,10 @@
 ## [Serilog](https://serilog.net) [discord](https://discordapp.com) sink.
 
-### what is it? 🤔
+### What is it? 🤔
 
 A sink for serilog that let you write your logs to discord.
 
-### how to use it ? 🤔
+### How to use it ? 🤔
 
 To use discord sink you need **WebhookId** and **WebhookToken**
 
