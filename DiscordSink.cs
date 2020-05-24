@@ -44,7 +44,7 @@ namespace Serilog.Sinks.Discord
 
                     embed.Color = new Color(255, 0, 0);
 
-                    embed.WithTitle("New shit occurred :");
+                    embed.WithTitle("An exception occurred :");
                     embed.AddField("Type", logEvent.Exception.GetType().Name);
                     embed.AddField("Message", logEvent.Exception.Message);
                     embed.AddField("StackTrace", stackTrace);
@@ -72,7 +72,7 @@ namespace Serilog.Sinks.Discord
 
             catch(Exception ex)
             {
-                await webHook.SendMessageAsync($"ooo shit, {ex.Message}", false);
+                await webHook.SendMessageAsync($"ooo snap, {ex.Message}", false);
             }
             
         }
