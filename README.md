@@ -1,31 +1,30 @@
-## [Serilog](https://serilog.net) [discord](https://discordapp.com) sink.
+## Serilog sink for Discord.
 
-### What is it? 🤔
+### Write your logs to discord.
 
-A sink for serilog that let you write your logs to discord.
+### To get started:
 
-### How to use it ? 🤔
+Step 1: get **WebhookId** and **WebhookToken**.
 
-First install package from
-https://www.nuget.org/packages/Serilog.Sinks.Discord/
+follow these steps to get them:
+  a. login to discord
+  b. create a discord Server
+  c. create a text chanel for your logs
+  d. create new webhook from chanel setting
+  e.copy webhook url
 
-then you need **WebhookId** and **WebhookToken**
-
-to get them, follow these steps :
-
-0. login to discord
-1. create a discord Server
-2. create a text chanel for logs
-3. in chanel setting section, Create webhook
-
-ffter createing webhook, you get a webhook url which contains **WebhookId** and **WebhookToken**.
+the link contains **WebhookId** and **WebhookToken** \
 `https://discordapp.com/api/webhooks/[WebhookId]/[WebhookToken]`
 
-now every thing is ready.                                                                            
-`Log.Logger = new LoggerConfiguration().WriteTo.Discord(ulong.Parse([WebhookId]), [WebhookToken]).CreateLogger();`
+Step2: install [nuget package](https://www.nuget.org/packages/Serilog.Sinks.Discord/) on your project
 
+Step 3: configure logger to write to discord:
 
-### Any thing to see? 🤔
+ `Log.Logger =` \
+  `new LoggerConfiguration()` \
+  `.WriteTo.Discord(ulong.Parse([WebhookId]), [WebhookToken])` \
+  `.CreateLogger();`
+
 
 ![Serilog](/Screenshots/logs1.png?raw=true)
 
