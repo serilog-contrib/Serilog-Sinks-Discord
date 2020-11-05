@@ -1,11 +1,9 @@
-# Serilog sink for Discord.
+# Serilog sink for Discord
 
-## Write your logs to discord.
+### Write your logs to discord.
 
-
-#### To get started:
-
-##### Step :one: : get **WebhookId** and **WebhookToken**.
+### To get started:
+#### Step :one: : get **WebhookId** and **WebhookToken**.
 
 follow these steps to get them: \
   a. login to discord \
@@ -17,9 +15,9 @@ follow these steps to get them: \
 the link contains **WebhookId** and **WebhookToken** \
 `https://discordapp.com/api/webhooks/[WebhookId]/[WebhookToken]`
 
-##### Step :two: : install [nuget package](https://www.nuget.org/packages/Serilog.Sinks.Discord/) on your project
+#### Step :two: : install [nuget package](https://www.nuget.org/packages/Serilog.Sinks.Discord/) on your project
 
-##### Step :three: : configure logger to write to discord:
+#### Step :three: : configure logger to write to discord:
 
  `Log.Logger =` \
   `new LoggerConfiguration()` \
