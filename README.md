@@ -17,9 +17,10 @@ webhook url contains **WebhookId** and **WebhookToken** \
   `new LoggerConfiguration()` \
   `.WriteTo.Discord(ulong.Parse([WebhookId]), [WebhookToken])` \
   `.CreateLogger();`
-\
-\
-\
+  
+
+### Screenshots:
+
 ![Serilog](/Screenshots/logs1.png?raw=true)
 
 ![Serilog](/Screenshots/logs.png?raw=true)
