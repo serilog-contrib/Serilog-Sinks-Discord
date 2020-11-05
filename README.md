@@ -5,20 +5,14 @@
 ### To get started:
 #### Step :one: : get **WebhookId** and **WebhookToken**.
 
-follow these steps to get them: \
-  a. login to discord \
-  b. create a discord Server \
-  c. create a text chanel for your logs \
-  d. create new webhook from chanel setting \
-  e. copy webhook url
-
-the link contains **WebhookId** and **WebhookToken** \
+webhook url contains **WebhookId** and **WebhookToken** \
 `https://discordapp.com/api/webhooks/[WebhookId]/[WebhookToken]`
+
+[how to create webhook url](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
 #### Step :two: : install [nuget package](https://www.nuget.org/packages/Serilog.Sinks.Discord/) on your project
 
-#### Step :three: : configure logger to write to discord:
-
+#### Step :three: : configure logger writes to discord:
  `Log.Logger =` \
   `new LoggerConfiguration()` \
   `.WriteTo.Discord(ulong.Parse([WebhookId]), [WebhookToken])` \
