@@ -25,12 +25,12 @@ namespace Serilog.Sinks.Discord
             _webhookToken=webhookToken;
         }
 
-        public  void Emit(LogEvent logEvent)
+        public void Emit(LogEvent logEvent)
         {
-            SendMessageAsync(logEvent);
+            SendMessage(logEvent);
         }
 
-        private async Task SendMessageAsync(LogEvent logEvent)
+        private void SendMessage(LogEvent logEvent)
         {
             var embedBuilder = new EmbedBuilder();
             var embeds = new List<Embed>();
@@ -54,7 +54,9 @@ namespace Serilog.Sinks.Discord
                     
                     embeds.Add(embedBuilder.Build());
 
-                    await webHook.SendMessageAsync(null, false, embeds);
+                    webHook
+                    .SendMessageAsync(null, false, embeds)
+                    .RunSynchronously();
                 }
                 else
                 {
@@ -69,17 +71,20 @@ namespace Serilog.Sinks.Discord
                     embedBuilder.Title = title;
                     embeds.Add(embedBuilder.Build());
 
-                    await webHook.SendMessageAsync(null, false, embeds);
+                    webHook
+                    .SendMessageAsync(null, false, embeds)
+                    .RunSynchronously();;
                 }
             }
 
             catch(Exception ex)
             {
-                await webHook.SendMessageAsync(
+                webHook
+                .SendMessageAsync(
                     $"ooo snap, {ex.Message}",
-                    false);
+                    false)
+                .RunSynchronously();
             }
-            
         }
         private static Color GetColor(LogEventLevel level)
         {
