@@ -38,7 +38,7 @@ namespace Serilog.Sinks.Discord
 
             try
             {
-                if (logEvent.Exception != null)
+                if (logEvent.Exception != null) //an exception has occuured
                 {
                     string stackTrace = logEvent.Exception.StackTrace;
 
