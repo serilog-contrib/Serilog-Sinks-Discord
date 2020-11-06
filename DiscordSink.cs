@@ -15,7 +15,10 @@ namespace Serilog.Sinks.Discord
         private readonly UInt64 _webhookId;
         private readonly string _webhookToken;
 
-        public DiscordSink(IFormatProvider formatProvider, UInt64 webhookId, string webhookToken)
+        public DiscordSink(
+            IFormatProvider formatProvider,
+             UInt64 webhookId,
+              string webhookToken)
         {
             _formatProvider = formatProvider;
             _webhookId=webhookId;
@@ -29,7 +32,7 @@ namespace Serilog.Sinks.Discord
 
         private async Task SendMessageAsync(LogEvent logEvent)
         {
-            var embed = new EmbedBuilder();
+            var embedBuilder = new EmbedBuilder();
             var embeds = new List<Embed>();
             var webHook = new DiscordWebhookClient(_webhookId, _webhookToken);
 
@@ -39,17 +42,17 @@ namespace Serilog.Sinks.Discord
                 {
                     string stackTrace = logEvent.Exception.StackTrace;
 
-                    if (!string.IsNullOrEmpty(stackTrace) && stackTrace.Length > 1024)
+                    if (!string.IsNullOrEmpty(stackTrace) 
+                        && stackTrace.Length > 1024)
                         stackTrace = stackTrace.Substring(0, 1020) + " ...";
 
-                    embed.Color = new Color(255, 0, 0);
-
-                    embed.WithTitle("An exception occurred :");
-                    embed.AddField("Type", logEvent.Exception.GetType().Name);
-                    embed.AddField("Message", logEvent.Exception.Message);
-                    embed.AddField("StackTrace", stackTrace);
+                    embedBuilder.Color = new Color(255, 0, 0);
+                    embedBuilder.WithTitle("An exception occurred :");
+                    embedBuilder.AddField("Type", logEvent.Exception.GetType().Name);
+                    embedBuilder.AddField("Message", logEvent.Exception.Message);
+                    embedBuilder.AddField("StackTrace", stackTrace);
                     
-                    embeds.Add(embed.Build());
+                    embeds.Add(embedBuilder.Build());
 
                     await webHook.SendMessageAsync(null, false, embeds);
                 }
@@ -58,25 +61,26 @@ namespace Serilog.Sinks.Discord
                     var message = logEvent.RenderMessage(_formatProvider);
 
                     string title = 
-                        (!string.IsNullOrEmpty(message) && message.Length > 256) ?
-                        message.Substring(0, 256) : message;
+                        message?.Length > 256 
+                        ? message.Substring(0, 256) 
+                        : message;
 
-                    embed.Color = GetColor(logEvent.Level);
-                    embed.Title = title;
-                    embeds.Add(embed.Build());
+                    embedBuilder.Color = GetColor(logEvent.Level);
+                    embedBuilder.Title = title;
+                    embeds.Add(embedBuilder.Build());
 
                     await webHook.SendMessageAsync(null, false, embeds);
-
                 }
             }
 
             catch(Exception ex)
             {
-                await webHook.SendMessageAsync($"ooo snap, {ex.Message}", false);
+                await webHook.SendMessageAsync(
+                    $"ooo snap, {ex.Message}",
+                    false);
             }
             
         }
-
         private static Color GetColor(LogEventLevel level)
         {
             switch (level)
@@ -104,6 +108,5 @@ namespace Serilog.Sinks.Discord
             }
 
         }
-
     }
 }
