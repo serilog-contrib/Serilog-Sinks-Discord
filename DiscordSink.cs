@@ -38,24 +38,17 @@ namespace Serilog.Sinks.Discord
                 if (logEvent.Exception != null)
                 {
                     embed = BuildExceptionEmbed(logEvent);
-                    webHook.SendFileAsync($"{Directory.GetCurrentDirectory()}/Resources/error.png", 
-                        null,
-                        false,
-                        embeds: new List<Embed>() {embed}).Wait();
-                } //an exception has occuured
+                }
                 else
                 {
                     embed = BuildBasicEmbed(logEvent);
-                    webHook.SendMessageAsync(null, false, new List<Embed>() {embed}).Wait();
                 }
 
+                webHook.SendMessageAsync(null, false, new List<Embed>() {embed}).Wait();
             }
             catch (Exception ex)
             {
-                webHook.SendMessageAsync(
-                        $"ooo snap, {ex.Message}",
-                        false)
-                    .Wait();
+                webHook.SendMessageAsync($"ooo snap, {ex.Message}", false).Wait();
             }
         }
 
@@ -85,10 +78,9 @@ namespace Serilog.Sinks.Discord
 
             embedBuilder.Color = new Color(255, 0, 0);
             embedBuilder.WithTitle("Error")
-                //.WithAuthor(Context.Client.CurrentUser)
                 .WithDescription(logEvent.Exception.Message)
-                //.WithThumbnailUrl("https://www.iconsdb.com/icons/preview/red/error-7-xxl.png")
-                .WithThumbnailUrl($"attachment://error.png")
+                //.WithThumbnailUrl($"attachment://error.png")
+                .WithThumbnailUrl($"https://raw.githubusercontent.com/javis86/Serilog.Sinks.Discord/master/Resources/error.png")
                 .AddField("Type", logEvent.Exception.GetType().Name, true)
                 .AddField("TimeStamp", logEvent.Timestamp.ToString(), true)
                 .AddField("Message", logEvent.Exception.Message)
