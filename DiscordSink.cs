@@ -37,12 +37,10 @@ namespace Serilog.Sinks.Discord
                 Embed embed;
                 if (logEvent.Exception != null)
                 {
+                    var filePath = $"{Directory.GetCurrentDirectory()}/Resources/error.png";
                     embed = BuildExceptionEmbed(logEvent);
-                    webHook.SendFileAsync($"{Directory.GetCurrentDirectory()}/Resources/error.png", 
-                        null,
-                        false,
-                        embeds: new List<Embed>() {embed}).Wait();
-                } //an exception has occuured
+                    webHook.SendFileAsync(filePath, null, false, new List<Embed>() {embed}).Wait();
+                }
                 else
                 {
                     embed = BuildBasicEmbed(logEvent);
@@ -52,10 +50,7 @@ namespace Serilog.Sinks.Discord
             }
             catch (Exception ex)
             {
-                webHook.SendMessageAsync(
-                        $"ooo snap, {ex.Message}",
-                        false)
-                    .Wait();
+                webHook.SendMessageAsync($"ooo snap, {ex.Message}", false).Wait();
             }
         }
 
@@ -85,9 +80,7 @@ namespace Serilog.Sinks.Discord
 
             embedBuilder.Color = new Color(255, 0, 0);
             embedBuilder.WithTitle("Error")
-                //.WithAuthor(Context.Client.CurrentUser)
                 .WithDescription(logEvent.Exception.Message)
-                //.WithThumbnailUrl("https://www.iconsdb.com/icons/preview/red/error-7-xxl.png")
                 .WithThumbnailUrl($"attachment://error.png")
                 .AddField("Type", logEvent.Exception.GetType().Name, true)
                 .AddField("TimeStamp", logEvent.Timestamp.ToString(), true)
@@ -95,7 +88,7 @@ namespace Serilog.Sinks.Discord
                 .AddField("StackTrace", $"```{stackTrace ?? "NA"}```")
                 .AddFieldRange(logEvent.Properties)
                 .WithCurrentTimestamp();
-
+            
             return embedBuilder.Build();
         }
 

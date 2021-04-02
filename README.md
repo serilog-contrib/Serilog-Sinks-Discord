@@ -15,8 +15,15 @@ webhook url contains **WebhookId** and **WebhookToken** \
 #### Step :three: : configure logger writes to discord:
  `Log.Logger =` \
   `new LoggerConfiguration()` \
-  `.WriteTo.Discord(ulong.Parse([WebhookId]), [WebhookToken], [restrictedToMinimumLevel])` \
+  `.WriteTo.Discord(ulong.Parse([WebhookId]), [WebhookToken])` \
   `.CreateLogger();`
+
+or with MinimumLevel:
+
+`Log.Logger =` \
+`new LoggerConfiguration()` \
+`.WriteTo.Discord(ulong.Parse([WebhookId]), [WebhookToken], [restrictedToMinimumLevel])` \
+`.CreateLogger();`
 
 ### Configuration by appsettings.json
 
@@ -38,6 +45,6 @@ webhook url contains **WebhookId** and **WebhookToken** \
 
 ### Screenshots:
 
-![Serilog](/Screenshots/logs1.png?raw=true)
-
 ![Serilog](/Screenshots/logs.png?raw=true)
+
+![Serilog](/Screenshots/logs1.png?raw=true)
