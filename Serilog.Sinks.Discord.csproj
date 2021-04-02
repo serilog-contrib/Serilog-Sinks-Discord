@@ -13,4 +13,14 @@
     <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\error.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

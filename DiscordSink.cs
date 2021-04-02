@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
 using Discord;
-using Discord.Commands;
 using Discord.Webhook;
 using Serilog.Core;
 using Serilog.Events;
@@ -16,8 +15,8 @@ namespace Serilog.Sinks.Discord
         private readonly string _webhookToken;
 
         public DiscordSink(IFormatProvider formatProvider,
-                           UInt64 webhookId,
-                           string webhookToken)
+            UInt64 webhookId,
+            string webhookToken)
         {
             _formatProvider = formatProvider;
             _webhookId = webhookId;
@@ -31,24 +30,32 @@ namespace Serilog.Sinks.Discord
 
         private void SendMessage(LogEvent logEvent)
         {
-            var webHook = new DiscordWebhookClient(_webhookId, _webhookToken);            
+            var webHook = new DiscordWebhookClient(_webhookId, _webhookToken);
 
             try
             {
                 Embed embed;
-                if (logEvent.Exception != null) //an exception has occuured
-                    embed  = BuildExceptionEmbed(logEvent);
+                if (logEvent.Exception != null)
+                {
+                    embed = BuildExceptionEmbed(logEvent);
+                    webHook.SendFileAsync($"{Directory.GetCurrentDirectory()}/Resources/error.png", 
+                        null,
+                        false,
+                        embeds: new List<Embed>() {embed}).Wait();
+                } //an exception has occuured
                 else
-                    embed = BuildBasicEmbed(logEvent);                    
-                
-                webHook.SendMessageAsync(null, false, new List<Embed>() { embed }).Wait();
+                {
+                    embed = BuildBasicEmbed(logEvent);
+                    webHook.SendMessageAsync(null, false, new List<Embed>() {embed}).Wait();
+                }
+
             }
             catch (Exception ex)
             {
                 webHook.SendMessageAsync(
-                    $"ooo snap, {ex.Message}",
-                    false)
-                .Wait();
+                        $"ooo snap, {ex.Message}",
+                        false)
+                    .Wait();
             }
         }
 
@@ -59,8 +66,8 @@ namespace Serilog.Sinks.Discord
 
             string title =
                 message?.Length > 256
-                ? message.Substring(0, 256)
-                : message;
+                    ? message.Substring(0, 256)
+                    : message;
 
             embedBuilder.Color = GetColor(logEvent.Level);
             embedBuilder.Title = title;
@@ -70,17 +77,24 @@ namespace Serilog.Sinks.Discord
         private static Embed BuildExceptionEmbed(LogEvent logEvent)
         {
             var embedBuilder = new EmbedBuilder();
-            string stackTrace = logEvent.Exception.StackTrace;
+            var stackTrace = logEvent.Exception.StackTrace;
 
             if (!string.IsNullOrEmpty(stackTrace)
                 && stackTrace.Length > 1024)
                 stackTrace = stackTrace.Substring(0, 1020) + " ...";
 
             embedBuilder.Color = new Color(255, 0, 0);
-            embedBuilder.WithTitle("An exception occurred :");
-            embedBuilder.AddField("Type", logEvent.Exception.GetType().Name);
-            embedBuilder.AddField("Message", logEvent.Exception.Message);
-            embedBuilder.AddField("StackTrace", stackTrace);
+            embedBuilder.WithTitle("Error")
+                //.WithAuthor(Context.Client.CurrentUser)
+                .WithDescription(logEvent.Exception.Message)
+                //.WithThumbnailUrl("https://www.iconsdb.com/icons/preview/red/error-7-xxl.png")
+                .WithThumbnailUrl($"attachment://error.png")
+                .AddField("Type", logEvent.Exception.GetType().Name, true)
+                .AddField("TimeStamp", logEvent.Timestamp.ToString(), true)
+                .AddField("Message", logEvent.Exception.Message)
+                .AddField("StackTrace", $"```{stackTrace ?? "NA"}```")
+                .AddFieldRange(logEvent.Properties)
+                .WithCurrentTimestamp();
 
             return embedBuilder.Build();
         }
