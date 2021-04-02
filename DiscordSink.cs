@@ -72,9 +72,7 @@ namespace Serilog.Sinks.Discord
             var embedBuilder = new EmbedBuilder();
             var stackTrace = logEvent.Exception.StackTrace;
 
-            if (!string.IsNullOrEmpty(stackTrace)
-                && stackTrace.Length > 1024)
-                stackTrace = stackTrace.Substring(0, 1020) + " ...";
+            stackTrace = FormatStackTrace(stackTrace);
 
             embedBuilder.Color = new Color(255, 0, 0);
             embedBuilder.WithTitle("Error")
@@ -84,11 +82,21 @@ namespace Serilog.Sinks.Discord
                 .AddField("Type", logEvent.Exception.GetType().Name, true)
                 .AddField("TimeStamp", logEvent.Timestamp.ToString(), true)
                 .AddField("Message", logEvent.Exception.Message)
-                .AddField("StackTrace", $"```{stackTrace ?? "NA"}```")
+                .AddField("StackTrace", stackTrace)
                 .AddFieldRange(logEvent.Properties)
                 .WithCurrentTimestamp();
 
             return embedBuilder.Build();
+        }
+
+        private static string FormatStackTrace(string stackTrace)
+        {
+            if (!string.IsNullOrEmpty(stackTrace)
+                && stackTrace.Length >= 1024)
+                stackTrace = stackTrace.Substring(0, 1015) + "...";
+
+            stackTrace = $"```{stackTrace ?? "NA"}```";
+            return stackTrace;
         }
 
         private static Color GetColor(LogEventLevel level)

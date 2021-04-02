@@ -10,7 +10,10 @@ namespace Serilog.Sinks.Discord
         {
             foreach (var property in logEventProperties)
             {
-                builder.AddField(property.Key, property.Value.ToString(), true);
+                var value = property.Value.ToString().Length < 1024 
+                    ? property.Value.ToString() 
+                    : property.Value.ToString().Substring(0, 1020) + "...";
+                builder.AddField(property.Key, value, true);
             }
             
             return builder;
