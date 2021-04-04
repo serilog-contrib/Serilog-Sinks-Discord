@@ -1,15 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Abolfazl Ejlali</Authors>
-    <Company></Company>
-    <Product>Serilog Discord Sink</Product>
-    <NeutralLanguage>aa</NeutralLanguage>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Authors>Colombera Javier</Authors>
+    <PackageId>Serilog.Sinks.Discord.Lite</PackageId>
+    <Version>0.1.0</Version>
+    <Product>Serilog Discord Sink Lite</Product>
+    <PackageTags>Serilog;Sinks;Discord;Light</PackageTags>
+    <Description>
+      This client library uses a lightweight discord webhook library to send logs to a Discord Channel.
+      It presents a nice format to see complete information about Errors and Exceptions.
+      Removes other dependencies from Discord.Net causing compatibility issues with EF
+    </Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Discord.Net.Webhook" Version="2.2.0" />
+    <PackageReference Include="DiscordWebhooks" Version="1.0.4" />
     <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
 
