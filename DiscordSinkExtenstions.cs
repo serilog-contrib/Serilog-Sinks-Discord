@@ -3,7 +3,6 @@ using Serilog.Configuration;
 
 namespace Serilog.Sinks.Discord
 {
-
     public static class DiscordSinkExtenstions
     {
         public static LoggerConfiguration Discord(
@@ -12,10 +11,8 @@ namespace Serilog.Sinks.Discord
                 string webhookToken,
                 IFormatProvider formatProvider = null)
         {
-            return loggerConfiguration.Sink(new DiscordSink(formatProvider, webhookId, webhookToken));
+            return loggerConfiguration.Sink(
+                new DiscordSink(formatProvider, webhookId, webhookToken));
         }
-        
-   
     }
-
 }

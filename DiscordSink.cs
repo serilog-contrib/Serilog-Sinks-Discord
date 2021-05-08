@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Discord;
-using Discord.Commands;
+﻿using Discord;
 using Discord.Webhook;
 using Serilog.Core;
 using Serilog.Events;
+using System;
+using System.Collections.Generic;
 
 namespace Serilog.Sinks.Discord
 {
@@ -17,8 +15,8 @@ namespace Serilog.Sinks.Discord
 
         public DiscordSink(
             IFormatProvider formatProvider,
-             UInt64 webhookId,
-              string webhookToken)
+            UInt64 webhookId,
+            string webhookToken)
         {
             _formatProvider = formatProvider;
             _webhookId=webhookId;
@@ -38,7 +36,7 @@ namespace Serilog.Sinks.Discord
 
             try
             {
-                if (logEvent.Exception != null) //an exception has occuured
+                if (logEvent.Exception != null) // an exception has occuured
                 {
                     string stackTrace = logEvent.Exception.StackTrace;
 
@@ -47,15 +45,14 @@ namespace Serilog.Sinks.Discord
                         stackTrace = stackTrace.Substring(0, 1020) + " ...";
 
                     embedBuilder.Color = new Color(255, 0, 0);
-                    embedBuilder.WithTitle("An exception occurred :");
+                    embedBuilder.WithTitle("An exception occurred: ");
                     embedBuilder.AddField("Type", logEvent.Exception.GetType().Name);
                     embedBuilder.AddField("Message", logEvent.Exception.Message);
                     embedBuilder.AddField("StackTrace", stackTrace);
                     
                     embeds.Add(embedBuilder.Build());
 
-                    webHook
-                    .SendMessageAsync(null, false, embeds)
+                    webHook.SendMessageAsync(null, false, embeds)
                     .RunSynchronously();
                 }
                 else
@@ -71,9 +68,8 @@ namespace Serilog.Sinks.Discord
                     embedBuilder.Title = title;
                     embeds.Add(embedBuilder.Build());
 
-                    webHook
-                    .SendMessageAsync(null, false, embeds)
-                    .RunSynchronously();;
+                    webHook.SendMessageAsync(null, false, embeds)
+                        .RunSynchronously();;
                 }
             }
 
@@ -111,7 +107,6 @@ namespace Serilog.Sinks.Discord
                 default:
                     return new Color();
             }
-
         }
     }
 }
