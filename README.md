@@ -2,21 +2,28 @@
 
 ### Write your logs to discord.
 
-### To get started:
-#### Step :one: : get **WebhookId** and **WebhookToken**.
+ #### To get started:
+ :one:: Get ```WebhookId``` and ```WebhookToken``` </br>
+> [Create webhoook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and copy its url
+which contains WebhookId and WebhookToken: </br>
+```https://discordapp.com/api/webhooks/{WebhookId}/{WebhookToken}```
 
-webhook url contains **WebhookId** and **WebhookToken** \
-`https://discordapp.com/api/webhooks/[WebhookId]/[WebhookToken]`
+:two:: Install [nuget package](https://www.nuget.org/packages/Serilog.Sinks.Discord/)
 
-[how to create webhook url](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
-
-#### Step :two: : install [nuget package](https://www.nuget.org/packages/Serilog.Sinks.Discord/) on your project
-
-#### Step :three: : configure logger writes to discord:
- `Log.Logger =` \
-  `new LoggerConfiguration()` \
-  `.WriteTo.Discord(ulong.Parse([WebhookId]), [WebhookToken])` \
-  `.CreateLogger();`
+:three:: Add discord output: </br>
+ ```csharp
+Log.Logger = new LoggerConfiguration()
+  .WriteTo.Discord({WebhookId}, {WebhookToken})
+  .CreateLogger();
+```
+for async logging you can use [serilog-sinks-async](https://github.com/serilog/serilog-sinks-async)
+```C#
+Log.Logger = new LoggerConfiguration()
+ .WriteTo.Async( a => 
+     a.Discord({WebhookId}, {WebhookToken}))
+ .Enrich.FromLogContext()
+ .CreateLogger();
+```
   
 
 ### Screenshots:
