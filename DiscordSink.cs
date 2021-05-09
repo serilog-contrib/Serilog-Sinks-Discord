@@ -3,7 +3,6 @@ using Discord.Webhook;
 using Serilog.Core;
 using Serilog.Events;
 using System;
-using System.Collections.Generic;
 
 namespace Serilog.Sinks.Discord
 {
@@ -19,8 +18,8 @@ namespace Serilog.Sinks.Discord
             string webhookToken)
         {
             _formatProvider = formatProvider;
-            _webhookId=webhookId;
-            _webhookToken=webhookToken;
+            _webhookId = webhookId;
+            _webhookToken = webhookToken;
         }
 
         public void Emit(LogEvent logEvent)
@@ -31,82 +30,92 @@ namespace Serilog.Sinks.Discord
         private void SendMessage(LogEvent logEvent)
         {
             var embedBuilder = new EmbedBuilder();
-            var embeds = new List<Embed>();
             var webHook = new DiscordWebhookClient(_webhookId, _webhookToken);
 
             try
             {
-                if (logEvent.Exception != null) // an exception has occuured
+                if (logEvent.Exception != null)
                 {
-                    string stackTrace = logEvent.Exception.StackTrace;
-
-                    if (!string.IsNullOrEmpty(stackTrace) 
-                        && stackTrace.Length > 1024)
-                        stackTrace = stackTrace.Substring(0, 1020) + " ...";
-
                     embedBuilder.Color = new Color(255, 0, 0);
-                    embedBuilder.WithTitle("An exception occurred: ");
-                    embedBuilder.AddField("Type", logEvent.Exception.GetType().Name);
-                    embedBuilder.AddField("Message", logEvent.Exception.Message);
-                    embedBuilder.AddField("StackTrace", stackTrace);
-                    
-                    embeds.Add(embedBuilder.Build());
+                    embedBuilder.WithTitle(":o: Exception");
+                    embedBuilder.AddField("Type:", $"```{logEvent.Exception.GetType().FullName}```");
 
-                    webHook.SendMessageAsync(null, false, embeds)
-                    .RunSynchronously();
+                    var message = FormatMessage(logEvent.Exception.Message, 1000);
+                    embedBuilder.AddField("Message:", message);
+
+                    var stackTrace = FormatMessage(logEvent.Exception.StackTrace, 1000);
+                    embedBuilder.AddField("StackTrace:", stackTrace);
+
+                    webHook.SendMessageAsync(null, false, new Embed[] { embedBuilder.Build() })
+                        .GetAwaiter()
+                        .GetResult();
                 }
                 else
                 {
                     var message = logEvent.RenderMessage(_formatProvider);
 
-                    string title = 
-                        message?.Length > 256 
-                        ? message.Substring(0, 256) 
-                        : message;
+                    message = FormatMessage(message, 240);
 
-                    embedBuilder.Color = GetColor(logEvent.Level);
-                    embedBuilder.Title = title;
-                    embeds.Add(embedBuilder.Build());
+                    SpecifyEmbedLevel(logEvent.Level, embedBuilder);
 
-                    webHook.SendMessageAsync(null, false, embeds)
-                        .RunSynchronously();;
+                    embedBuilder.Description = message;
+
+                    webHook.SendMessageAsync(null, false, new Embed[] { embedBuilder.Build() })
+                        .GetAwaiter()
+                        .GetResult();
                 }
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                webHook
-                .SendMessageAsync(
-                    $"ooo snap, {ex.Message}",
-                    false)
-                .RunSynchronously();
+                webHook.SendMessageAsync(
+                    $"ooo snap, {ex.Message}", false)
+                    .GetAwaiter()
+                    .GetResult();
             }
         }
-        private static Color GetColor(LogEventLevel level)
+        private static void SpecifyEmbedLevel(LogEventLevel level, EmbedBuilder embedBuilder)
         {
             switch (level)
             {
-                case LogEventLevel.Debug:
-                    return Color.Purple;
-                
-                case LogEventLevel.Error:
-                    return Color.Red;
-                
-                case LogEventLevel.Fatal:
-                    return Color.DarkRed;
-                
-                case LogEventLevel.Information:
-                    return new Color(0, 186, 255);
-                
                 case LogEventLevel.Verbose:
-                    return new Color(0,0,0);
-                
+                    embedBuilder.Title = ":loud_sound: Verbose";
+                    embedBuilder.Color = Color.LightGrey;
+                    break;
+                case LogEventLevel.Debug:
+                    embedBuilder.Title = ":mag: Debug";
+                    embedBuilder.Color = Color.LightGrey;
+                    break;
+                case LogEventLevel.Information:
+                    embedBuilder.Title = ":information_source: Information";
+                    embedBuilder.Color = new Color(0, 186, 255);
+                    break;
                 case LogEventLevel.Warning:
-                    return Color.Orange;
-                
+                    embedBuilder.Title = ":warning: Warning";
+                    embedBuilder.Color = new Color(255, 204, 0);
+                    break;
+                case LogEventLevel.Error:
+                    embedBuilder.Title = ":x: Error";
+                    embedBuilder.Color = new Color(255, 0, 0);
+                    break;
+                case LogEventLevel.Fatal:
+                    embedBuilder.Title = ":skull_crossbones: Fatal";
+                    embedBuilder.Color = Color.DarkRed;
+                    break;
                 default:
-                    return new Color();
+                    break;
             }
+        }
+
+        public static string FormatMessage(string message, int maxLenght)
+        {
+            if (message.Length > maxLenght)
+                message = $"{message.Substring(0, maxLenght)} ...";
+
+            if (!string.IsNullOrWhiteSpace(message))
+                message = $"```{message}```";
+
+            return message;
         }
     }
 }
