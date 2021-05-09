@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>Abolfazl Ejlali</Authors>
     <Company></Company>
     <Product>Serilog Discord Sink</Product>
@@ -10,7 +10,8 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net.Webhook" Version="2.0.1" />
-    <PackageReference Include="serilog" Version="2.8.0" />
+    <PackageReference Include="serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
   </ItemGroup>
 
 </Project>
