@@ -2,6 +2,10 @@
 
 ### Write your logs to discord.
 
+![Serilog](/Screenshots/screenshot.png?raw=true)
+
+![Serilog](/Screenshots/screenshot1.png?raw=true)
+
  #### To get started:
  :one:: Get ```WebhookId``` and ```WebhookToken``` </br>
 > [Create webhoook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and copy its url
@@ -24,10 +28,3 @@ Log.Logger = new LoggerConfiguration()
  .Enrich.FromLogContext()
  .CreateLogger();
 ```
-  
-
-### Screenshots:
-
-![Serilog](/Screenshots/logs1.png?raw=true)
-
-![Serilog](/Screenshots/logs.png?raw=true)
