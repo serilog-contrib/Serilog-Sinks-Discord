@@ -3,9 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>Abolfazl Ejlali</Authors>
+    <Version>1.1.1</Version>
     <Company></Company>
     <Product>Serilog Discord Sink</Product>
     <NeutralLanguage>aa</NeutralLanguage>
+    <PackageDescription>Serilog sink for Discord.</PackageDescription>
+    <RepositoryUrl>https://github.com/AblEdge/Serilog-Sinks-Discrod</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
