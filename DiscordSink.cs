@@ -11,15 +11,18 @@ namespace Serilog.Sinks.Discord
         private readonly IFormatProvider _formatProvider;
         private readonly UInt64 _webhookId;
         private readonly string _webhookToken;
+        private readonly LogEventLevel _restrictedToMinimumLevel;
 
         public DiscordSink(
             IFormatProvider formatProvider,
             UInt64 webhookId,
-            string webhookToken)
+            string webhookToken,
+            LogEventLevel restrictedToMinimumLevel)
         {
             _formatProvider = formatProvider;
             _webhookId = webhookId;
             _webhookToken = webhookToken;
+            _restrictedToMinimumLevel = restrictedToMinimumLevel;
         }
 
         public void Emit(LogEvent logEvent)
@@ -29,6 +32,9 @@ namespace Serilog.Sinks.Discord
 
         private void SendMessage(LogEvent logEvent)
         {
+            if (ShouldNotLogMessage(_restrictedToMinimumLevel, logEvent.Level))
+                return;
+
             var embedBuilder = new EmbedBuilder();
             var webHook = new DiscordWebhookClient(_webhookId, _webhookToken);
 
@@ -116,6 +122,14 @@ namespace Serilog.Sinks.Discord
                 message = $"```{message}```";
 
             return message;
+        }
+
+        private static bool ShouldNotLogMessage(LogEventLevel minimumLogEventLevel, LogEventLevel messageLogEventLevel)
+        {
+                if ((int)messageLogEventLevel < (int)minimumLogEventLevel)
+                    return true;
+                return false;
+            }
         }
     }
 }
