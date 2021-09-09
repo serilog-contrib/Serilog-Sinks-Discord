@@ -17,7 +17,7 @@ namespace Serilog.Sinks.Discord
             IFormatProvider formatProvider,
             UInt64 webhookId,
             string webhookToken,
-            LogEventLevel restrictedToMinimumLevel)
+            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information)
         {
             _formatProvider = formatProvider;
             _webhookId = webhookId;
@@ -126,10 +126,10 @@ namespace Serilog.Sinks.Discord
 
         private static bool ShouldNotLogMessage(LogEventLevel minimumLogEventLevel, LogEventLevel messageLogEventLevel)
         {
-                if ((int)messageLogEventLevel < (int)minimumLogEventLevel)
-                    return true;
-                return false;
-            }
+            if ((int)messageLogEventLevel < (int)minimumLogEventLevel)
+                return true;
+            return false;
         }
     }
+}
 }
