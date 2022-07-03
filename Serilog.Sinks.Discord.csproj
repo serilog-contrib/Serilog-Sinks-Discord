@@ -1,15 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Authors>Abolfazl Ejlali</Authors>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <Company></Company>
     <Product>Serilog Discord Sink</Product>
     <NeutralLanguage>aa</NeutralLanguage>
     <PackageDescription>Serilog sink for Discord.</PackageDescription>
     <RepositoryUrl>https://github.com/AblEdge/Serilog-Sinks-Discrod</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/serilog-contrib/Serilog-Sinks-Discord</PackageProjectUrl>
+    <PackageIcon>SinkIcon.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\SinkIcon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Discord.Net.Webhook" Version="2.3.1" />

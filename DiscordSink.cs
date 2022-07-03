@@ -32,7 +32,7 @@ namespace Serilog.Sinks.Discord
 
         private void SendMessage(LogEvent logEvent)
         {
-            if (ShouldNotLogMessage(_restrictedToMinimumLevel, logEvent.Level))
+            if (!ShouldLogMessage(_restrictedToMinimumLevel, logEvent.Level))
                 return;
 
             var embedBuilder = new EmbedBuilder();
@@ -66,7 +66,8 @@ namespace Serilog.Sinks.Discord
 
                     embedBuilder.Description = message;
 
-                    webHook.SendMessageAsync(null, false, new Embed[] { embedBuilder.Build() })
+                    webHook.SendMessageAsync(
+                        null, false, new Embed[] { embedBuilder.Build() })
                         .GetAwaiter()
                         .GetResult();
                 }
@@ -124,11 +125,9 @@ namespace Serilog.Sinks.Discord
             return message;
         }
 
-        private static bool ShouldNotLogMessage(LogEventLevel minimumLogEventLevel, LogEventLevel messageLogEventLevel)
-        {
-            if ((int)messageLogEventLevel < (int)minimumLogEventLevel)
-                return true;
-            return false;
-        }
+        private static bool ShouldLogMessage(
+            LogEventLevel minimumLogEventLevel,
+            LogEventLevel messageLogEventLevel) =>
+                (int)messageLogEventLevel < (int)minimumLogEventLevel ? false : true;
     }
 }
