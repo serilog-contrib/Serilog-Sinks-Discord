@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Serilog.Configuration;
 using Serilog.Events;
 
@@ -11,10 +12,11 @@ namespace Serilog.Sinks.Discord
                 UInt64 webhookId,
                 string webhookToken,
                 IFormatProvider formatProvider = null,
-                LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose)
+                LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose,
+                Dictionary<string, string> properties = null)
         {
             return loggerConfiguration.Sink(
-                new DiscordSink(formatProvider, webhookId, webhookToken, restrictedToMinimumLevel));
+                new DiscordSink(formatProvider, webhookId, webhookToken, restrictedToMinimumLevel, properties));
         }
     }
 }
