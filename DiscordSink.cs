@@ -3,6 +3,8 @@ using Discord.Webhook;
 using Serilog.Core;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Serilog.Sinks.Discord
 {
@@ -12,17 +14,19 @@ namespace Serilog.Sinks.Discord
         private readonly UInt64 _webhookId;
         private readonly string _webhookToken;
         private readonly LogEventLevel _restrictedToMinimumLevel;
-
+        private readonly Dictionary<string, string> _properties;
         public DiscordSink(
             IFormatProvider formatProvider,
             UInt64 webhookId,
             string webhookToken,
-            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information)
+            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information,
+            Dictionary<string, string> properties = null)
         {
             _formatProvider = formatProvider;
             _webhookId = webhookId;
             _webhookToken = webhookToken;
             _restrictedToMinimumLevel = restrictedToMinimumLevel;
+            _properties = properties;
         }
 
         public void Emit(LogEvent logEvent)
@@ -37,6 +41,10 @@ namespace Serilog.Sinks.Discord
 
             var embedBuilder = new EmbedBuilder();
             var webHook = new DiscordWebhookClient(_webhookId, _webhookToken);
+
+            if (_properties != null && _properties.Any())
+                foreach (var property in _properties)
+                    embedBuilder.AddField(property.Key, property.Value);
 
             try
             {
