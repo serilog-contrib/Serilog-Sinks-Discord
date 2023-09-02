@@ -2,28 +2,31 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-    <Authors>Abolfazl Edgelolli</Authors>
-    <Version>1.2.0</Version>
+    <Authors>Dennes Neumann</Authors>
+    <Version>1.2.3</Version>
     <Company>Serilog Contrib</Company>
     <Product>Serilog Discord Sink</Product>
     <NeutralLanguage>aa</NeutralLanguage>
     <PackageDescription>Serilog sink for Discord.</PackageDescription>
-    <RepositoryUrl>https://github.com/AblEdge/Serilog-Sinks-Discrod</RepositoryUrl>
+    <RepositoryUrl>https://github.com/misterj3012/Serilog-Sinks-Discrod</RepositoryUrl>
     <PackageProjectUrl>https://github.com/serilog-contrib/Serilog-Sinks-Discord</PackageProjectUrl>
     <PackageIcon>SinkIcon.png</PackageIcon>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<RepositoryType>Git</RepositoryType>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="SinkIcon.png">
+    <None Include="..\SinkIcon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Discord.Net.Webhook" Version="3.8.1" />
-    <PackageReference Include="serilog" Version="2.12.0" />
+    <PackageReference Include="Discord.Net.Webhook" Version="3.12.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
   </ItemGroup>
 
 </Project>
