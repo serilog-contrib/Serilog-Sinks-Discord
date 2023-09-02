@@ -30,7 +30,6 @@ namespace Serilog.Sinks.Discord
             {
                 throw new ArgumentNullException(nameof(loggerConfiguration));
             }
-            LogEventLevel.
             return loggerConfiguration.Sink(new DiscordSink(formatProvider, webhookId, webhookToken, restrictedToMinimumLevel, botName, avatarURL));
         }
     }
