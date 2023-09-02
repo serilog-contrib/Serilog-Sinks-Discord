@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-    <Authors>Dennes Neumann</Authors>
+    <Authors>Abolfazl Edgelolli, Dennes Neumann</Authors>
     <Version>1.2.3</Version>
     <Company>Serilog Contrib</Company>
     <Product>Serilog Discord Sink</Product>
@@ -11,10 +11,6 @@
     <RepositoryUrl>https://github.com/misterj3012/Serilog-Sinks-Discrod</RepositoryUrl>
     <PackageProjectUrl>https://github.com/serilog-contrib/Serilog-Sinks-Discord</PackageProjectUrl>
     <PackageIcon>SinkIcon.png</PackageIcon>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<RepositoryType>Git</RepositoryType>
-	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
